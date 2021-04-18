@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.app.mapper.AppUserGradleConfigMapper">
+    
+    <resultMap type="AppUserGradleConfig" id="AppUserGradleConfigResult">
+        <result property="id"    column="id"    />
+        <result property="money"    column="money"    />
+        <result property="gradle"    column="gradle"    />
+    </resultMap>
+
+    <sql id="selectAppUserGradleConfigVo">
+        select id, money, gradle from app_user_gradle_config
+    </sql>
+
+    <select id="selectAppUserGradleConfigList" parameterType="AppUserGradleConfig" resultMap="AppUserGradleConfigResult">
+        <include refid="selectAppUserGradleConfigVo"/>
+        <where>  
+            <if test="money != null "> and money = #{money}</if>
+            <if test="gradle != null  and gradle != ''"> and gradle = #{gradle}</if>
+        </where>
+    </select>
+    
+    <select id="selectAppUserGradleConfigById" parameterType="Long" resultMap="AppUserGradleConfigResult">
+        <include refid="selectAppUserGradleConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAppUserGradleConfig" parameterType="AppUserGradleConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into app_user_gradle_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="money != null">money,</if>
+            <if test="gradle != null and gradle != ''">gradle,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="money != null">#{money},</if>
+            <if test="gradle != null and gradle != ''">#{gradle},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAppUserGradleConfig" parameterType="AppUserGradleConfig">
+        update app_user_gradle_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="money != null">money = #{money},</if>
+            <if test="gradle != null and gradle != ''">gradle = #{gradle},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAppUserGradleConfigById" parameterType="Long">
+        delete from app_user_gradle_config where id = #{id}
+    </delete>
+
+    <delete id="deleteAppUserGradleConfigByIds" parameterType="String">
+        delete from app_user_gradle_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

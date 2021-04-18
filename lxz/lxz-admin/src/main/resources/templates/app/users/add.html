@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增客户端用户信息')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-users-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">登录账号：</label>
+            <div class="col-sm-8">
+                <input id="loginName" name="loginName" placeholder="请输入登录账号" class="form-control" type="text" maxlength="30" required>
+            </div>
+        </div>
+
+        <div class="form-group" style="display: none">
+            <label class="col-sm-3 control-label">用户类型：</label>
+            <div class="col-sm-8">
+                <select name="userType" class="form-control m-b">
+                    <option value="00">系统创建</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">密码：</label>
+            <div class="col-sm-8">
+                <input id="password" name="password" placeholder="请输入登录密码" class="form-control" type="password" th:value="${@config.getKey('sys.user.initPassword')}" required>
+                <span class="input-group-addon" title="登录密码,鼠标按下显示密码"
+                      onmousedown="$('#password').attr('type','text')"
+                      onmouseup="$('#password').attr('type','password')"><i class="fa fa-key"></i></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">用户昵称：</label>
+            <div class="col-sm-8">
+                <input name="userName" placeholder="请输入用户名称" class="form-control" type="text" maxlength="30" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">用户邮箱：</label>
+            <div class="col-sm-8">
+                <input id="email" name="email" placeholder="请输入用户邮箱" class="form-control" type="text" maxlength="50" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">手机号码：</label>
+            <div class="col-sm-8">
+                <input id="phonenumber" name="phonenumber" placeholder="请输入手机号码" class="form-control" type="text" maxlength="11" required>
+                <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">用户性别：</label>
+            <div class="col-sm-8">
+                <select name="sex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注：</label>
+            <div class="col-sm-8">
+                <textarea name="remark" class="form-control"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var prefix = ctx + "app/users"
+    $("#form-users-add").validate({
+        onkeyup: false,
+        rules:{
+
+            loginName:{
+                minlength: 2,
+                maxlength: 20,
+                remote: {
+                    url: prefix + "/checkLoginNameUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "loginName": function() {
+                            return $.common.trim($("#loginName").val());
+                        }
+                    },
+                    dataFilter: function(data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+            password:{
+                minlength: 5,
+                maxlength: 20
+            },
+
+            phonenumber:{
+                isPhone:true,
+                remote: {
+                    url: prefix + "/checkPhoneUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "phonenumber": function() {
+                            return $.common.trim($("#phonenumber").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+
+            email:{
+                email:true,
+                remote: {
+                    url: prefix + "/checkEmailUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "email": function() {
+                            return $.common.trim($("#email").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+
+        },
+        messages: {
+            "loginName": {
+                remote: "用户已经存在"
+            },
+            "phonenumber":{
+                remote: "手机号码已经存在"
+            },
+            "email":{
+                remote: "邮箱已经存在"
+            }
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-users-add').serialize());
+        }
+    }
+</script>
+</body>
+</html>
