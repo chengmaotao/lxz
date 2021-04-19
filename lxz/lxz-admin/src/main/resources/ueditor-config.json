@@ -1,0 +1,3 @@
+toolbars: [
+['fullscreen', 'source', 'undo', 'redo', 'bold']
+]

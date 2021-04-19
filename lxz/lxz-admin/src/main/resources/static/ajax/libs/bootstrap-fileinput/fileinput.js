@@ -3446,7 +3446,7 @@
             var self = this, u = self.uploadCache;
             if (self.showPreview) {
                 $.each(u, function (key, setting) {
-                    self.previewCache.add(setting.content, setting.config, setting.tags, setting.append);
+                    self.previewCache.add(setting.content, setting.statistics, setting.tags, setting.append);
                 });
                 if (self.hasInitData) {
                     self._initPreview();

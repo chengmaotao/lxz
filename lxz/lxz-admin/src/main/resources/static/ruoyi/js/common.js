@@ -56,13 +56,13 @@ $(function() {
                 done: function(value, date) {
                     // 结束时间大于开始时间
                     if (value !== '') {
-                        endDate.config.min.year = date.year;
-                        endDate.config.min.month = date.month - 1;
-                        endDate.config.min.date = date.date;
+                        endDate.statistics.min.year = date.year;
+                        endDate.statistics.min.month = date.month - 1;
+                        endDate.statistics.min.date = date.date;
                     } else {
-                        endDate.config.min.year = '';
-                        endDate.config.min.month = '';
-                        endDate.config.min.date = '';
+                        endDate.statistics.min.year = '';
+                        endDate.statistics.min.month = '';
+                        endDate.statistics.min.date = '';
                     }
                 }
             });
@@ -74,13 +74,13 @@ $(function() {
                 done: function(value, date) {
                     // 开始时间小于结束时间
                     if (value !== '') {
-                        startDate.config.max.year = date.year;
-                        startDate.config.max.month = date.month - 1;
-                        startDate.config.max.date = date.date;
+                        startDate.statistics.max.year = date.year;
+                        startDate.statistics.max.month = date.month - 1;
+                        startDate.statistics.max.date = date.date;
                     } else {
-                        startDate.config.max.year = '2099';
-                        startDate.config.max.month = '12';
-                        startDate.config.max.date = '31';
+                        startDate.statistics.max.year = '2099';
+                        startDate.statistics.max.month = '12';
+                        startDate.statistics.max.date = '31';
                     }
                 }
             });

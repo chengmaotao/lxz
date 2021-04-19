@@ -13,7 +13,7 @@
 	<link th:href="@{/ajax/libs/bootstrap-table/bootstrap-table.min.css?v=20210202}" rel="stylesheet"/>
 	<link th:href="@{/css/animate.css}" rel="stylesheet"/>
 	<link th:href="@{/css/style.css?v=20200903}" rel="stylesheet"/>
-	<link th:href="@{/ruoyi/css/ry-ui.css?v=4.6.1}" rel="stylesheet"/>
+	<link th:href="@{/ruoyi/css/ry-ui.css?v=4.6.0}" rel="stylesheet"/>
 </head>
 
 <!-- 通用JS -->
@@ -37,8 +37,8 @@
     <script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
 	<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
 	<script th:src="@{/ajax/libs/layui/layui.js}"></script>
-	<script th:src="@{/ruoyi/js/common.js?v=4.6.1}"></script>
-	<script th:src="@{/ruoyi/js/ry-ui.js?v=4.6.1}"></script>
+	<script th:src="@{/ruoyi/js/common.js?v=4.6.0}"></script>
+	<script th:src="@{/ruoyi/js/ry-ui.js?v=4.6.0}"></script>
 </div>
 
 <!-- ztree树插件 -->
@@ -210,4 +210,11 @@
 <!-- 表格打印插件 -->
 <div th:fragment="bootstrap-table-print-js">
 	<script th:src="@{/ajax/libs/bootstrap-table/extensions/print/bootstrap-table-print.min.js?v=20200729}"></script>
+</div>
+
+<!-- ueditor富文本编辑器插件 -->
+<div th:fragment="ueditor-js">
+	<script th:src="@{/ajax/libs/ueditor/ueditor.config.js}"></script>
+	<script th:src="@{/ajax/libs/ueditor/ueditor.all.min.js}"></script>
+	<script th:src="@{/ajax/libs/ueditor/lang/zh-cn/zh-cn.js}"></script>
 </div>

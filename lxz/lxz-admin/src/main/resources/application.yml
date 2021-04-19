@@ -1,13 +1,13 @@
 # 项目相关配置
 ruoyi:
   # 名称
-  name: RuoYi
+  name: LXZ
   # 版本
   version: 4.6.1
   # 版权年份
   copyrightYear: 2021
   # 实例演示开关
-  demoEnabled: true
+  demoEnabled: false
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
   profile: D:/ruoyi/uploadPath
   # 获取ip地址开关
@@ -61,9 +61,9 @@ spring:
   servlet:
      multipart:
        # 单个文件大小
-       max-file-size:  10MB
+       max-file-size:  100MB
        # 设置总上传的文件大小
-       max-request-size:  20MB
+       max-request-size:  200MB
   # 服务模块
   devtools:
     restart:
@@ -135,3 +135,18 @@ xss:
 swagger:
   # 是否开启swagger
   enabled: true
+
+
+# 滑块验证码
+aj:
+  captcha:
+    # blockPuzzle滑块 clickWord文字点选  default默认两者都实例化
+    type: blockPuzzle
+    # 右下角显示字
+    water-mark: lxz.vip
+    # 校验滑动拼图允许误差偏移量(默认5像素)
+    slip-offset: 5
+    # aes加密坐标开启或者禁用(true|false)
+    aes-status: true
+    # 滑动干扰项(0/1/2)
+    interference-options: 2
