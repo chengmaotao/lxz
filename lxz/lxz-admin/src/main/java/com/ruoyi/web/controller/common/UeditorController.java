@@ -47,7 +47,7 @@ public class UeditorController extends BaseController
     public Object ueditor(HttpServletRequest request, @RequestParam(value = "action", required = true) String action,
             MultipartFile upfile) throws Exception
     {
-        List<Object> param = new ArrayList<Object>()
+       /* List<Object> param = new ArrayList<Object>()
         {
             {
                 add(action);
@@ -55,7 +55,9 @@ public class UeditorController extends BaseController
             }
         };
         Method method = this.getClass().getMethod(METHOD_HEAD + action, List.class, String.class);
-        return method.invoke(this.getClass().newInstance(), param, serverConfig.getUrl());
+        return method.invoke(this.getClass().newInstance(), param, serverConfig.getUrl());*/
+
+       return null;
     }
 
     /**

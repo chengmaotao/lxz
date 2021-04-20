@@ -1,5 +1,7 @@
 package com.ruoyi.web.controller.app;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.app.domain.AppUsers;
 import com.ruoyi.app.service.IAppUsersService;
 import com.ruoyi.common.annotation.Log;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,133 +46,88 @@ public class AppDataController extends BaseController {
         return prefix + "/statistics";
     }
 
-    /**
-     * 查询客户端用户信息列表
-     */
-    @RequiresPermissions("app:users:list")
-    @PostMapping("/list")
+
+    @RequiresPermissions("app:data:view")
+    @GetMapping("/statisticsRes")
     @ResponseBody
-    public TableDataInfo list(AppUsers appUsers) {
-        startPage();
-        List<AppUsers> list = appUsersService.selectAppUsersList(appUsers);
-        return getDataTable(list);
-    }
+    public JSONObject users(Integer codeType) {
 
-    /**
-     * 导出客户端用户信息列表
-     */
-    @RequiresPermissions("app:users:export")
-    @Log(title = "客户端用户信息", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(AppUsers appUsers) {
-        List<AppUsers> list = appUsersService.selectAppUsersList(appUsers);
-        ExcelUtil<AppUsers> util = new ExcelUtil<AppUsers>(AppUsers.class);
-        return util.exportExcel(list, "客户端用户信息数据");
-    }
+        JSONObject res = new JSONObject();
 
-    /**
-     * 新增客户端用户信息
-     */
-    @GetMapping("/add")
-    public String add() {
-        return prefix + "/add";
-    }
-
-    /**
-     * 新增保存客户端用户信息
-     */
-    @RequiresPermissions("app:users:add")
-    @Log(title = "客户端用户信息", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
-    @ResponseBody
-    public AjaxResult addSave(AppUsers appUsers) {
-        return toAjax(appUsersService.insertAppUsers(appUsers));
-    }
-
-    /**
-     * 修改客户端用户信息
-     */
-    @GetMapping("/edit/{userId}")
-    public String edit(@PathVariable("userId") Long userId, ModelMap mmap) {
-        AppUsers appUsers = appUsersService.selectAppUsersById(userId);
-        mmap.put("appUsers", appUsers);
-        return prefix + "/edit";
-    }
-
-    /**
-     * 修改保存客户端用户信息
-     */
-    @RequiresPermissions("app:users:edit")
-    @Log(title = "客户端用户信息", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
-    @ResponseBody
-    public AjaxResult editSave(AppUsers appUsers) {
-
-        appUsers.setUpdateBy(ShiroUtils.getLoginName());
-        appUsers.setUpdateTime(new Date());
-
-        return toAjax(appUsersService.updateAppUsers(appUsers));
-    }
-
-    /**
-     * 删除客户端用户信息
-     */
-    @RequiresPermissions("app:users:remove")
-    @Log(title = "客户端用户信息", businessType = BusinessType.DELETE)
-    @PostMapping("/remove")
-    @ResponseBody
-    public AjaxResult remove(String ids) {
-
-        return toAjax(appUsersService.deleteAppUsersByIds(ids));
-    }
+        List<String> xAxisData = null;
 
 
-    /**
-     * 校验用户名
-     */
-    @PostMapping("/checkLoginNameUnique")
-    @ResponseBody
-    public String checkLoginNameUnique(AppUsers user) {
-        return appUsersService.checkLoginNameUnique(user.getLoginName());
-    }
-
-    /**
-     * 校验手机号码
-     */
-    @PostMapping("/checkPhoneUnique")
-    @ResponseBody
-    public String checkPhoneUnique(AppUsers user) {
-        return appUsersService.checkPhoneUnique(user);
-    }
-
-    /**
-     * 校验email邮箱
-     */
-    @PostMapping("/checkEmailUnique")
-    @ResponseBody
-    public String checkEmailUnique(AppUsers user) {
-        return appUsersService.checkEmailUnique(user);
-    }
+        // 购买人数
+        if (codeType == null || codeType.intValue() != 1) {
 
 
-    @GetMapping("/resetPwd/{userId}")
-    public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap) {
-        mmap.put("user", appUsersService.selectAppUsersById(userId));
-        return prefix + "/resetPwd";
-    }
+            xAxisData = new ArrayList<>();
 
-    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
-    @PostMapping("/resetPwd")
-    @ResponseBody
-    public AjaxResult resetPwdSave(AppUsers user) {
-        user.setSalt(ShiroUtils.randomSalt());
-        user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
-        user.setUpdateBy(ShiroUtils.getLoginName());
-        user.setUpdateTime(new Date());
-        if (appUsersService.resetUserPwd(user) > 0) {
-            return success();
+            xAxisData.add("理财三号");
+            xAxisData.add("理财刘号");
+            xAxisData.add("理财一号");
+            xAxisData.add("理财就号");
+            xAxisData.add("理财器号");
+
+            res.put("xAxisData", xAxisData);
+
+            List<Integer> datastatic = new ArrayList<>();
+            datastatic.add(100);
+            datastatic.add(33);
+            datastatic.add(34);
+            datastatic.add(234);
+            datastatic.add(234);
+
+            res.put("datastatic", datastatic);
+        } else {
+            // 购买金额
+
+
+            //{value:235, name:'视频广告'},
+
+            JSONArray amountArray = new JSONArray();
+
+            JSONObject amount1 = new JSONObject();
+            amount1.put("value",123.45);
+            amount1.put("name","股票三号");
+            amountArray.add(amount1);
+
+
+            JSONObject amount2 = new JSONObject();
+            amount2.put("value",193.45);
+            amount2.put("name","股票一号");
+            amountArray.add(amount2);
+
+            JSONObject amount3 = new JSONObject();
+            amount3.put("value",223.45);
+            amount3.put("name","股票吧号");
+            amountArray.add(amount3);
+
+
+            JSONObject amount4 = new JSONObject();
+            amount4.put("value",223.45);
+            amount4.put("name","股票刘号");
+            amountArray.add(amount4);
+
+
+            JSONObject amount5 = new JSONObject();
+            amount5.put("value",173.45);
+            amount5.put("name","股票n号");
+            amountArray.add(amount5);
+
+            JSONObject amount6 = new JSONObject();
+            amount6.put("value",163.45);
+            amount6.put("name","股票si号");
+            amountArray.add(amount6);
+
+
+            res.put("amountStatistics", amountArray);
         }
-        return error();
+
+        return res;
+
     }
+
+
+
 }
