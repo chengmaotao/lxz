@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysFinanceMapper">
+    
+    <resultMap type="SysFinance" id="SysFinanceResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="financeId"    column="finance_id"    />
+        <result property="minNum"    column="min_num"    />
+        <result property="maxNum"    column="max_num"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="allAmount"    column="all_amount"    />
+        <result property="cycle"    column="cycle"    />
+        <result property="dayRate"    column="day_rate"    />
+        <result property="userGradle"    column="user_gradle"    />
+        <result property="newsLink"    column="news_link"    />
+    </resultMap>
+
+    <sql id="selectSysFinanceVo">
+        select id, name, finance_id, min_num, max_num, start_time, end_time, all_amount, cycle, day_rate, user_gradle, news_link from sys_finance
+    </sql>
+
+    <select id="selectSysFinanceList" parameterType="SysFinance" resultMap="SysFinanceResult">
+        <include refid="selectSysFinanceVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="financeId != null  and financeId != ''"> and finance_id = #{financeId}</if>
+            <if test="minNum != null "> and min_num = #{minNum}</if>
+            <if test="maxNum != null "> and max_num = #{maxNum}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="allAmount != null "> and all_amount = #{allAmount}</if>
+            <if test="cycle != null "> and cycle = #{cycle}</if>
+            <if test="dayRate != null "> and day_rate = #{dayRate}</if>
+            <if test="userGradle != null"> and user_gradle &lt;= #{userGradle}</if>
+            <if test="newsLink != null  and newsLink != ''"> and news_link like concat('%', #{newsLink}, '%') </if>
+        </where>
+    </select>
+    
+    <select id="selectSysFinanceById" parameterType="Long" resultMap="SysFinanceResult">
+        <include refid="selectSysFinanceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysFinance" parameterType="SysFinance" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_finance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="financeId != null and financeId != ''">finance_id,</if>
+            <if test="minNum != null">min_num,</if>
+            <if test="maxNum != null">max_num,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="allAmount != null">all_amount,</if>
+            <if test="cycle != null">cycle,</if>
+            <if test="dayRate != null">day_rate,</if>
+            <if test="userGradle != null">user_gradle,</if>
+            <if test="newsLink != null">news_link,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="financeId != null and financeId != ''">#{financeId},</if>
+            <if test="minNum != null">#{minNum},</if>
+            <if test="maxNum != null">#{maxNum},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="allAmount != null">#{allAmount},</if>
+            <if test="cycle != null">#{cycle},</if>
+            <if test="dayRate != null">#{dayRate},</if>
+            <if test="userGradle != null">#{userGradle},</if>
+            <if test="newsLink != null">#{newsLink},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysFinance" parameterType="SysFinance">
+        update sys_finance
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="financeId != null and financeId != ''">finance_id = #{financeId},</if>
+            <if test="minNum != null">min_num = #{minNum},</if>
+            <if test="maxNum != null">max_num = #{maxNum},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="allAmount != null">all_amount = #{allAmount},</if>
+            <if test="cycle != null">cycle = #{cycle},</if>
+            <if test="dayRate != null">day_rate = #{dayRate},</if>
+            <if test="userGradle != null">user_gradle = #{userGradle},</if>
+            <if test="newsLink != null">news_link = #{newsLink},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysFinanceById" parameterType="Long">
+        delete from sys_finance where id = #{id}
+    </delete>
+
+    <delete id="deleteSysFinanceByIds" parameterType="String">
+        delete from sys_finance where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
